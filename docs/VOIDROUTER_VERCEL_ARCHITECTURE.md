@@ -73,6 +73,10 @@ A phase is not complete merely because the app builds.
 6. **Validation:** lint, typecheck, unit/integration tests, Vercel build, smoke tests with a hosted database.
 7. **Deployment:** documented one-click Vercel setup and a clean install/deploy test.
 
+## Audited upstream scale
+
+See [the runtime inventory](./VOIDROUTER_RUNTIME_INVENTORY.md) for the measured snapshot. The audited tree contains 810 API Route Handler files, 267 database TypeScript/JavaScript files, 240 SQL files, and nine SQLite adapter files. These counts explain why a superficial driver swap or one catch-all route cannot constitute a complete port.
+
 ## Current known blockers
 
 - The upstream core database layer is tightly coupled to synchronous SQLite operations and local-file lifecycle management.
