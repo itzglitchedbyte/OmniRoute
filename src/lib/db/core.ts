@@ -1,4 +1,5 @@
 import { ensureUsageEvidenceSchema } from "./usageEvidenceSchema";
+import { assertDurableStorageForVercel } from "./vercelPersistenceGuard";
 /**
  * db/core.js — Database infrastructure: schema, singleton, utils, migration.
  *
@@ -1002,6 +1003,11 @@ export function runManagedDbHealthCheck(options?: ManagedHealthCheckOptions) {
 }
 
 export function getDbInstance(): SqliteDatabase {
+  // Vercel can recycle this process after any request. The cloud-mode SQLite
+  // fallback is process-local and would silently lose all persisted state.
+  // Fail closed until the durable hosted adapter is wired into this database layer.
+  assertDurableStorageForVercel({ isVercel: process.env.VERCEL === "1", isBuildPhase });
+
   const existing = getDb();
   if (existing) return existing;
 
